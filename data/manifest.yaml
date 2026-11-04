@@ -1,11 +1,69 @@
 # Source documents. PDFs are downloaded to data/raw/ (gitignored) and checked against sha256.
-# Only documents with a verified open licence are listed here.
-#
-# - doc_id: short-id
-#   title: Document title
-#   url: https://...
-#   language: en | de
-#   licence: e.g. CC BY-NC-SA 3.0 IGO
-#   licence_url: https://...
-#   sha256: <hex>
-documents: []
+# Only documents whose licence was verified in the PDF itself are listed.
+# `title` is the short form used in citations; page numbers are PDF pages (1-based).
+# Note: some edoc.rki.de records show "CC BY 3.0 DE" in their metadata, but the PDFs
+# themselves state CC BY 4.0. The licence printed in the document is recorded here.
+
+documents:
+  - doc_id: who-physical-activity-2020
+    title: WHO Guidelines on Physical Activity and Sedentary Behaviour (2020)
+    url: https://iris.who.int/server/api/core/bitstreams/faa83413-d89e-4be9-bb01-b24671aef7ca/content
+    source_page: https://iris.who.int/handle/10665/336656
+    language: en
+    licence: CC BY-NC-SA 3.0 IGO
+    licence_url: https://creativecommons.org/licenses/by-nc-sa/3.0/igo
+    sha256: 50b66c44e7083cc3752849f301ae1d60d9360d511e34c0c948b39bdf6e13dc88
+
+  - doc_id: who-hypertension-2021
+    title: WHO Guideline for the Pharmacological Treatment of Hypertension in Adults (2021)
+    url: https://iris.who.int/server/api/core/bitstreams/f062769d-f075-4a00-87af-0a2106e0bd04/content
+    source_page: https://iris.who.int/handle/10665/344424
+    language: en
+    licence: CC BY-NC-SA 3.0 IGO
+    licence_url: https://creativecommons.org/licenses/by-nc-sa/3.0/igo
+    sha256: 57f6376d5c9bc4ea6c44873625547c8a5443d5a6ad8c8c422733681563db05fb
+
+  - doc_id: rki-stiko-2026
+    title: STIKO-Empfehlungen 2026 (Epid Bull 4/2026)
+    url: https://edoc.rki.de/bitstream/handle/176904/13181.5/EB-4-2026_10-25646-13636-5.pdf?sequence=10&isAllowed=y
+    source_page: https://edoc.rki.de/handle/176904/13181.5
+    language: de
+    licence: CC BY 4.0
+    licence_url: https://creativecommons.org/licenses/by/4.0/
+    sha256: 78799641d645546aedbd37f4860f62c863cffc6b840f654480e5d695c9b5570b
+
+  - doc_id: rki-johm-aktivitaet-2017
+    title: RKI JoHM – Körperliche Aktivität in der Freizeit bei Erwachsenen (2017)
+    url: https://edoc.rki.de/bitstream/176904/2650/1/20m7pbUeDqZ2.pdf
+    source_page: https://edoc.rki.de/handle/176904/2650
+    language: de
+    licence: CC BY 4.0
+    licence_url: https://creativecommons.org/licenses/by/4.0/
+    sha256: 2238e7478baef89d154f058f706ea6b9afac974ff97c9aa122126c667b704cf2
+
+  - doc_id: rki-johm-bluthochdruck-2017
+    title: RKI JoHM – 12-Monats-Prävalenz von Bluthochdruck in Deutschland (2017)
+    url: https://edoc.rki.de/bitstream/176904/2581/4/JoHM_2017_01_gesundheitliche_lage3.pdf
+    source_page: https://edoc.rki.de/handle/176904/2581
+    language: de
+    licence: CC BY 4.0
+    licence_url: https://creativecommons.org/licenses/by/4.0/
+    sha256: ca3186a971d196baf3993929b21e3847fa8a0a27e203dea03afd00c7b297075f
+
+  - doc_id: rki-johm-sitzzeiten-2022
+    title: RKI JoHM – Wie viel sitzen Erwachsene? (2022)
+    url: https://edoc.rki.de/bitstream/176904/10233/1/JHealthMonit_2022_03_Sitzzeiten_GEDA_2019_2020.pdf
+    source_page: https://edoc.rki.de/handle/176904/10233
+    language: de
+    licence: CC BY 4.0
+    licence_url: https://creativecommons.org/licenses/by/4.0/
+    sha256: 6d48141bbf12b02d5475a738a7d67d1c7fd94baf1c8b477f99faf879133028ee
+
+  - doc_id: rki-johm-bewegungsfoerderung-2025
+    title: RKI JoHM – Bewegung und Bewegungsförderung in Deutschland (2025)
+    url: https://edoc.rki.de/bitstream/176904/13086/1/JHealthMonit_2025_4_Bewegungsfoerderung_Ueberblick.pdf
+    source_page: https://edoc.rki.de/handle/176904/13086
+    language: de
+    licence: CC BY 4.0
+    licence_url: https://creativecommons.org/licenses/by/4.0/
+    sha256: 3d3620a9bd79713e99a41fd3bd01284dc1ed4c43797f6c6e15532098d1ee5585
