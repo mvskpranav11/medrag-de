@@ -1,0 +1,44 @@
+[project]
+name = "medrag-de"
+version = "0.1.0"
+description = "Local, bilingual (DE/EN) RAG assistant for public medical guidelines with page-level citations."
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi>=0.115",
+    "httpx>=0.27",
+    "pydantic-settings>=2.4",
+    "pymupdf>=1.24",
+    "pyyaml>=6.0",
+    "qdrant-client>=1.12",
+    "rank-bm25>=0.2.2",
+    "streamlit>=1.38",
+    "uvicorn>=0.30",
+]
+
+[project.optional-dependencies]
+# Heavy model stack (torch). Kept optional so CI and the UI image stay light.
+ml = ["sentence-transformers>=3.0"]
+# RAGAS judge metrics, only needed for `make eval`.
+eval = ["ragas>=0.2"]
+
+[dependency-groups]
+dev = ["pytest>=8.0", "ruff>=0.6"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/medrag"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

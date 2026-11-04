@@ -1,0 +1,11 @@
+# Source documents. PDFs are downloaded to data/raw/ (gitignored) and checked against sha256.
+# Only documents with a verified open licence are listed here.
+#
+# - doc_id: short-id
+#   title: Document title
+#   url: https://...
+#   language: en | de
+#   licence: e.g. CC BY-NC-SA 3.0 IGO
+#   licence_url: https://...
+#   sha256: <hex>
+documents: []
