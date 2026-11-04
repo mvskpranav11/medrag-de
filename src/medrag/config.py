@@ -20,8 +20,18 @@ class Settings(BaseSettings):
 
     # Models (sized for an 8 GB Apple Silicon machine)
     embedding_model: str = "BAAI/bge-m3"
-    reranker_model: str = "BAAI/bge-reranker-v2-m3"
-    device: Literal["auto", "cpu", "mps", "cuda"] = "auto"
+    # Small multilingual cross-encoder (118M params). bge-reranker-v2-m3 does not fit next
+    # to the LLM in 8 GB; set RERANKER_MODEL=BAAI/bge-reranker-v2-m3 on bigger machines.
+    reranker_model: str = "cross-encoder/mmarco-mMiniLMv2-L12-H384-v1"
+    # Query-time embedder + re-ranker run on CPU by default so the GPU stays free for the
+    # LLM (on 8 GB Apple Silicon all three do not fit in GPU memory together).
+    device: Literal["auto", "cpu", "mps", "cuda"] = "cpu"
+    # Ingestion runs without the LLM, so it can use the GPU.
+    ingest_device: Literal["auto", "cpu", "mps", "cuda"] = "auto"
+
+    # "Not found" thresholds (calibrated scores only; see retrieval.search)
+    min_dense_score: float = 0.60
+    min_rerank_score: float = 0.50
 
     # Chunking (characters)
     chunk_size: int = 1000

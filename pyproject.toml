@@ -42,3 +42,5 @@ select = ["E", "F", "I", "UP", "B"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+# pymupdf (SWIG) emits harmless import-time warnings
+filterwarnings = ["ignore:builtin type .* has no __module__ attribute:DeprecationWarning"]

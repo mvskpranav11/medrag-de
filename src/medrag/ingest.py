@@ -150,13 +150,15 @@ def resolve_device(device: str) -> str:
     return "cpu"
 
 
-def load_embedder(settings: Settings) -> SentenceTransformer:
+def load_embedder(settings: Settings, device: str) -> SentenceTransformer:
+    import torch
     from sentence_transformers import SentenceTransformer
 
-    device = resolve_device(settings.device)
+    device = resolve_device(device)
     model = SentenceTransformer(settings.embedding_model, device=device)
-    if device != "cpu":
-        model.half()  # fp16 halves memory, important on 8 GB machines
+    # Half precision halves memory (2.2 GB -> 1.1 GB): fp16 on GPU, bf16 on CPU.
+    # bf16 is slow for bulk work on CPU but fine for one short query (~0.2 s).
+    model.to(torch.float16 if device != "cpu" else torch.bfloat16)
     model.max_seq_length = 512  # chunks are ~250 tokens; keeps memory bounded
     return model
 
@@ -194,7 +196,7 @@ def run(settings: Settings) -> None:
     sources = load_manifest(settings.manifest_path)
     client = QdrantClient(url=settings.qdrant_url, timeout=int(settings.request_timeout_s))
     ensure_collection(client, settings.qdrant_collection)
-    model = load_embedder(settings)
+    model = load_embedder(settings, settings.ingest_device)
     for source in sources:
         path = download(source, settings.raw_dir, settings.request_timeout_s)
         chunks = build_chunks(source, extract_pages(path), settings)
