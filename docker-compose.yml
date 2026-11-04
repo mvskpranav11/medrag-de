@@ -1,3 +1,5 @@
+# Default: Ollama runs on the host (on macOS only native Ollama can use the GPU).
+# Linux / no host Ollama:  OLLAMA_URL=http://ollama:11434 docker compose --profile ollama up -d
 services:
   qdrant:
     image: qdrant/qdrant:v1.20.0
@@ -7,5 +9,55 @@ services:
       - qdrant_storage:/qdrant/storage
     restart: unless-stopped
 
+  api:
+    build: .
+    image: medrag-de:local
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      QDRANT_URL: http://qdrant:6333
+      OLLAMA_URL: ${OLLAMA_URL:-http://host.docker.internal:11434}
+      DEVICE: cpu
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    ports:
+      - "8000:8000"
+    volumes:
+      - hf_cache:/home/app/.cache/huggingface  # model weights survive restarts
+    depends_on:
+      - qdrant
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 15s
+      timeout: 5s
+      start_period: 600s  # first start downloads ~3 GB of model weights
+    restart: unless-stopped
+
+  ui:
+    build: .
+    image: medrag-de:local
+    command: >
+      streamlit run ui/app.py --server.port 8501 --server.address 0.0.0.0
+      --server.headless true --browser.gatherUsageStats false
+    environment:
+      API_URL: http://api:8000
+    ports:
+      - "8501:8501"
+    depends_on:
+      - api
+    restart: unless-stopped
+
+  ollama:
+    image: ollama/ollama:0.40.14
+    profiles: ["ollama"]
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_models:/root/.ollama
+    restart: unless-stopped
+
 volumes:
   qdrant_storage:
+  hf_cache:
+  ollama_models:

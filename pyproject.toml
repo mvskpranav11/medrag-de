@@ -19,12 +19,21 @@ dependencies = [
 
 [project.optional-dependencies]
 # Heavy model stack (torch). Kept optional so CI and the UI image stay light.
-ml = ["sentence-transformers>=3.0"]
+ml = ["sentence-transformers>=3.0", "torch>=2.4"]
 # RAGAS judge metrics, only needed for `make eval`.
 eval = ["ragas>=0.2"]
 
 [dependency-groups]
 dev = ["pytest>=8.0", "ruff>=0.6"]
+
+# Linux (Docker, CI) uses CPU-only torch wheels: several GB smaller than the CUDA build.
+[tool.uv.sources]
+torch = [{ index = "pytorch-cpu", marker = "sys_platform == 'linux'" }]
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
 
 [build-system]
 requires = ["hatchling"]

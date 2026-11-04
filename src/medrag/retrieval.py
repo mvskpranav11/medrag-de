@@ -142,6 +142,16 @@ class Retriever:
         assert self._bm25 is not None
         return self._bm25
 
+    def warm_up(self) -> int:
+        """Load both models and the BM25 index up front. Returns the number of chunks."""
+        self._bm25_index()
+        self.embedder.encode(["warm-up"])
+        self.reranker.predict([("warm-up", "warm-up")])
+        return len(self._chunks)
+
+    def count(self) -> int:
+        return self.client.count(self.settings.qdrant_collection).count
+
     def dense(self, query: str, k: int) -> list[Hit]:
         vector = self.embedder.encode([query], normalize_embeddings=True)[0]
         response = self.client.query_points(

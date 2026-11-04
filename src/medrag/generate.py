@@ -33,9 +33,9 @@ _EN_WORDS = frozenset(
     "the and is are not a an how what which when who where why should be will for with "
     "at of to in does do can on or also after about from many much recommended".split()
 )
-# One or more adjacent markers such as [1], [2, 3], [1][2] or [1] [2]
+# One or more adjacent markers such as [1], [2, 3], [1][2], [1] [2] or [1], [2]
 _MARKER = r"\[\d+(?:\s*,\s*\d+)*\]"
-_CITATION_GROUP = re.compile(rf"{_MARKER}(?:\s*{_MARKER})*")
+_CITATION_GROUP = re.compile(rf"{_MARKER}(?:[\s,;]*{_MARKER})*")
 
 SYSTEM_PROMPT = """You answer questions about medical guideline documents.
 Rules:
@@ -68,10 +68,22 @@ class Answer:
 class LLM(Protocol):
     def complete(self, system: str, user: str) -> str: ...
 
+    def ping(self) -> bool: ...
+
 
 class OllamaLLM:
     def __init__(self, url: str, model: str, timeout: float) -> None:
         self.url, self.model, self.timeout = url.rstrip("/"), model, timeout
+
+    def ping(self) -> bool:
+        """True if Ollama is reachable and the model has been pulled."""
+        try:
+            response = httpx.get(f"{self.url}/api/tags", timeout=3)
+            response.raise_for_status()
+        except httpx.HTTPError:
+            return False
+        names = {m["name"] for m in response.json().get("models", [])}
+        return self.model in names or f"{self.model}:latest" in names
 
     def complete(self, system: str, user: str) -> str:
         response = httpx.post(
@@ -99,6 +111,17 @@ class OpenAILLM:
             raise ValueError("OPENAI_API_KEY is required when LLM_PROVIDER=openai")
         self.base_url, self.api_key = base_url.rstrip("/"), api_key
         self.model, self.timeout = model, timeout
+
+    def ping(self) -> bool:
+        try:
+            response = httpx.get(
+                f"{self.base_url}/models",
+                headers={"Authorization": f"Bearer {self.api_key}"},
+                timeout=5,
+            )
+        except httpx.HTTPError:
+            return False
+        return response.status_code == 200
 
     def complete(self, system: str, user: str) -> str:
         response = httpx.post(

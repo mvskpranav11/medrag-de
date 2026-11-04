@@ -67,7 +67,7 @@ def test_invalid_citation_numbers_are_dropped() -> None:
 
 def test_same_page_citations_are_merged() -> None:
     same_page = HITS + [Hit("c3", "who-pa", "WHO PA", "en", 3, "More text from page 3.", 0.6)]
-    answer = ask("How much activity?", FakeLLM("150-300 minutes [1] [3]. Also [2, 3]."), same_page)
+    answer = ask("How much activity?", FakeLLM("150-300 minutes [1], [3]. Also [2, 3]."), same_page)
     assert answer.answer == "150-300 minutes [WHO PA, p. 3]. Also [WHO HTN, p. 7][WHO PA, p. 3]."
     assert [(c.title, c.page) for c in answer.citations] == [("WHO PA", 3), ("WHO HTN", 7)]
 
