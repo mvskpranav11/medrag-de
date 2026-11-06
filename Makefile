@@ -1,10 +1,12 @@
 .PHONY: setup up down logs api ui ingest eval test lint format
 
 OLLAMA_MODEL ?= qwen2.5:3b
+JUDGE_MODEL ?= qwen2.5:7b
 
 setup:  ## Install all dependencies and pull the local LLM
 	uv sync --all-extras
 	ollama pull $(OLLAMA_MODEL)
+	ollama pull $(JUDGE_MODEL)  # only needed for make eval
 
 up:  ## Start qdrant, api and ui in Docker (Ollama runs on the host)
 	docker compose up -d --build

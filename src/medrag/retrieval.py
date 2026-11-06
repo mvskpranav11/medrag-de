@@ -152,6 +152,11 @@ class Retriever:
     def count(self) -> int:
         return self.client.count(self.settings.qdrant_collection).count
 
+    def chunk_texts(self) -> dict[str, str]:
+        """All indexed chunk texts by chunk id."""
+        self._bm25_index()
+        return {hit.chunk_id: hit.text for hit in self._chunks}
+
     def dense(self, query: str, k: int) -> list[Hit]:
         vector = self.embedder.encode([query], normalize_embeddings=True)[0]
         response = self.client.query_points(

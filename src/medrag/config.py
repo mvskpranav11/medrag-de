@@ -45,9 +45,9 @@ class Settings(BaseSettings):
     openai_api_key: str = ""
     openai_model: str = "gpt-4o-mini"
 
-    # Evaluation judge (RAGAS). Defaults to the same local model.
+    # Evaluation judge (RAGAS). qwen2.5:3b proved too weak to judge reliably (see EVALUATION.md).
     judge_provider: Literal["ollama", "openai"] = "ollama"
-    judge_model: str = "qwen2.5:3b"
+    judge_model: str = "qwen2.5:7b"
 
     # Limits, enforced in code
     max_question_chars: int = 500
