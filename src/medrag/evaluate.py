@@ -220,7 +220,7 @@ def summarize_all(results: list[ItemResult], modes: list[str]) -> dict[str, Any]
     }
 
 
-def environment(settings: Settings, n_verified: int, n_total: int, ragas: bool) -> dict:
+def environment(settings: Settings, n_verified: int, n_total: int, judged: bool) -> dict:
     def sysctl(key: str) -> str:
         try:
             return subprocess.run(
@@ -238,7 +238,7 @@ def environment(settings: Settings, n_verified: int, n_total: int, ragas: bool) 
         "hardware": f"{sysctl('machdep.cpu.brand_string') or platform.processor()}, "
         f"{ram_gb:.0f} GB RAM, {platform.system()} {platform.machine()}",
         "llm": f"{settings.llm_provider}:{llm_model}",
-        "judge": f"{settings.judge_provider}:{settings.judge_model}" if ragas else "not run",
+        "judge": f"{settings.judge_provider}:{settings.judge_model}" if judged else "not run",
         "embedding_model": settings.embedding_model,
         "reranker_model": settings.reranker_model,
         "query_device": settings.device,
@@ -364,7 +364,8 @@ def main() -> None:
         save_items(results, items_path)
 
     results = [r for r in results if r.mode in args.modes]
-    env = environment(settings, len(golden), n_total, not args.no_ragas)
+    judged = any(r.faithfulness is not None or r.answer_relevancy is not None for r in results)
+    env = environment(settings, len(golden), n_total, judged)
     summary = summarize_all(results, args.modes)
     (args.out / "summary.json").write_text(
         json.dumps({"environment": env, "results": summary}, indent=2), encoding="utf-8"
