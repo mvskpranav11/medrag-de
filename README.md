@@ -111,7 +111,7 @@ Needs [uv](https://docs.astral.sh/uv/), [Docker](https://www.docker.com/) and
 [Ollama](https://ollama.com/) (native Ollama, so it can use the Mac GPU).
 
 ```bash
-git clone <repo-url> medrag-de && cd medrag-de
+git clone https://github.com/mvskpranav11/medrag-de.git && cd medrag-de
 make setup                     # Python deps + ollama pull (qwen2.5:3b, and the qwen2.5:7b judge for make eval)
 docker compose up -d qdrant
 make ingest                    # downloads 7 PDFs, checks sha256, indexes 1153 chunks
