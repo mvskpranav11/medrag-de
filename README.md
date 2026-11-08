@@ -6,9 +6,9 @@ nothing. Everything runs on my laptop (Apple M3, 8 GB RAM), with no cloud API.
 
 > Demo project, **not medical advice**. Don't use it for health decisions.
 
-![Demo: a German question answered from a German and an English source, and an off-topic question answered with "not found"](docs/assets/demo.gif)
+![Demo: two German questions (one answered from an English WHO guideline), one English question, and an off-topic question answered with "not found"](docs/assets/demo.gif)
 
-*Recorded on my laptop. The waiting time is cut out: these answers took 11–19 s, the "not found"
+*Recorded on my laptop. The waiting time is cut out: these answers took 6–15 s, the "not found"
 about 2 s.*
 
 Example from the evaluation run:
