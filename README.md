@@ -6,8 +6,10 @@ nothing. Everything runs on my laptop (Apple M3, 8 GB RAM), with no cloud API.
 
 > Demo project, **not medical advice**. Don't use it for health decisions.
 
-<!-- Demo GIF goes here: docs/assets/demo.gif (record with Cmd+Shift+5, convert with
-     ffmpeg -i demo.mov -vf "fps=10,scale=900:-1" docs/assets/demo.gif) -->
+![Demo: a German question answered from a German and an English source, and an off-topic question answered with "not found"](docs/assets/demo.gif)
+
+*Recorded on my laptop. The waiting time is cut out: these answers took 11–19 s, the "not found"
+about 2 s.*
 
 Example from the evaluation run:
 
