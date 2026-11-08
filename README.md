@@ -11,12 +11,6 @@ nothing. Everything runs on my laptop (Apple M3, 8 GB RAM), with no cloud API.
 *Recorded on my laptop. The waiting time is cut out: these answers took 6–15 s, the "not found"
 about 2 s.*
 
-Example from the evaluation run:
-
-> **Q:** Für wen empfiehlt die STIKO die RSV-Impfung als Standardimpfung?
->
-> **A:** Die STIKO empfiehlt die RSV-Impfung als Standardimpfung für Personen ≥ 75 Jahre [STIKO-Empfehlungen 2026 (Epid Bull 4/2026), p. 3].
-
 ## Results
 
 I built a set of 40 test questions (drafted with an LLM) and checked each one by hand against the
